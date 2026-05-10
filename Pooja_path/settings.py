@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-557c8.up.railway.app',
+    'https://pooja-path.up.railway.app',
 ]
 
 # Application definition
