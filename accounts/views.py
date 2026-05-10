@@ -72,7 +72,7 @@ def login_page(request):
 
             user = authenticate(
                 request,
-                mobile_number=user_obj.mobile_number,
+                username=user_obj.mobile_number,
                 password=password
             )
 
