@@ -1,0 +1,1 @@
+web: gunicorn Pooja_path.wsgi

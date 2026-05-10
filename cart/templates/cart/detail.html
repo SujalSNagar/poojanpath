@@ -1,0 +1,133 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+<section class="cart-section container">
+<a href="{% url 'core:home' %}"
+   class="back-btn">
+
+    <i class="bi bi-arrow-left"></i>
+
+    Back to Home
+
+</a>
+    <div class="cart-header">
+
+        <h1>Your Cart</h1>
+
+        <p>
+            Total Items :
+            {{ cart_item_count }}
+        </p>
+
+    </div>
+
+    {% if cart %}
+
+        <div class="cart-wrapper">
+
+            <!-- Cart Products -->
+            <div class="cart-items">
+
+                {% for item in cart %}
+
+                    <div class="cart-card">
+
+                        <div class="cart-image">
+
+                            <img src="{{ item.product.image.url }}"
+                                 alt="{{ item.product.name }}">
+
+                        </div>
+
+                        <div class="cart-content">
+
+                            <h3>
+                                {{ item.product.name }}
+                            </h3>
+
+                            <p class="cart-price">
+                                ₹ {{ item.price }}
+                            </p>
+
+                            <p class="cart-quantity">
+                                Quantity :
+                                {{ item.quantity }}
+                            </p>
+
+                            <p class="cart-total">
+                                Total :
+                                ₹ {{ item.total_price }}
+                            </p>
+
+                            <a href="{% url 'cart:remove' item.product.id %}"
+                               class="remove-btn">
+
+                                Remove
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            <!-- Summary -->
+            <div class="cart-summary">
+
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+
+                    <span>Total Items</span>
+
+                    <span>{{ cart_item_count }}</span>
+
+                </div>
+
+                <div class="summary-row">
+
+                    <span>Total Price</span>
+
+                    <strong>₹ {{ cart_total }}</strong>
+
+                </div>
+
+                <button class="btn btn-buy-now w-100">
+                    Proceed to Checkout
+                </button>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <!-- Empty Cart -->
+
+        <div class="empty-cart">
+
+            <h2>Your Cart is Empty</h2>
+
+            <p>
+                Looks like you have not added anything yet.
+            </p>
+
+            <a href="/" class="btn btn-main">
+                Continue Shopping
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock body %}

@@ -1,0 +1,121 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block secondary_nav %}
+{% endblock secondary_nav %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock extra_css %}
+
+{% block body %}
+
+<section class="account-section">
+
+    <div class="container">
+
+        <div class="account-card">
+
+            <div class="text-center mb-4">
+
+                <h1>Create Account</h1>
+
+                <p>
+                    Join Pooja Path Samagri
+                </p>
+
+            </div>
+
+            <form method="post">
+
+                {% if messages %}
+
+                    {% for message in messages %}
+
+                        <p class="{% if message.tags == 'error' %}text-danger{% else %}text-success{% endif %} mb-2">
+
+                        {{message.tags}}: {{ message }}
+
+                        </p>
+
+                {% endfor %}
+
+                {% endif %}
+
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">
+                        Mobile Number
+                    </label>
+
+                    <input type="text" name="mobile_number" class="form-control" placeholder="Enter mobile number" required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Email
+                    </label>
+
+                    <input type="email"
+                           name="email"
+                           class="form-control"
+                           placeholder="Enter email (optional)">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Password
+                    </label>
+
+                    <input type="password"
+                           name="password"
+                           class="form-control"
+                           placeholder="Enter password"
+                           required>
+
+                </div>
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Confirm Password
+                    </label>
+
+                    <input type="password"
+                           name="confirm_password"
+                           class="form-control"
+                           placeholder="Confirm password"
+                           required>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-main w-100 py-2">
+
+                    Create Account
+
+                </button>
+
+            </form>
+
+            <div class="account-bottom-text">
+
+                Already have an account?
+
+                <a href="{% url 'accounts:login_page' %}">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock body %}

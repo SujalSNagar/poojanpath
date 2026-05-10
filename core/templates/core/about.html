@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/about.css' %}">
+
+{% endblock extra_css %}
+
+{% block body %}
+
+
+
+<section class="about-section">
+ <a href="{% url 'core:home' %}"
+   class="back-btn">
+
+    <i class="bi bi-arrow-left"></i>
+
+    Back
+
+</a>
+    <div class="container">
+
+        <div class="about-content">
+
+            <h1>
+                About Us
+            </h1>
+
+            <p class="about-text">
+
+                Welcome to Pooja Path Samagri — your trusted destination
+                for authentic pooja essentials, spiritual products,
+                temple decor, and devotional collections.
+
+            </p>
+
+            <p class="about-text">
+
+                Our mission is to make sacred and high-quality
+                pooja samagri easily accessible for every home.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock body %}

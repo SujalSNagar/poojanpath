@@ -1,0 +1,54 @@
+.about-section{
+    padding-block: 4rem;
+}
+
+.about-content{
+    max-width: 850px;
+    margin-inline: auto;
+
+    text-align: center;
+}
+
+.about-content h1{
+    margin-bottom: 1rem;
+
+    font-size: clamp(2rem, 4vw, 3rem);
+
+    font-weight: 700;
+
+    color: var(--color-primary);
+}
+
+.about-text{
+    margin-bottom: 1rem;
+
+    color: #555;
+
+    line-height: 1.8;
+
+    font-size: 1rem;
+}
+
+.about-image{
+    width: 100%;
+
+    max-height: 420px;
+
+    margin-top: 2rem;
+
+    object-fit: cover;
+
+    border-radius: 20px;
+}
+
+@media(max-width:768px){
+
+    .about-section{
+        padding-block: 2rem;
+    }
+
+    .about-image{
+        max-height: 280px;
+    }
+
+}
