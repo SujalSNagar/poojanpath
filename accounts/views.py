@@ -13,7 +13,7 @@ def signup_page(request):
     if request.method == "POST":
 
         mobile = request.POST.get("mobile_number")
-        email = request.POST.get("email")
+        email = request.POST.get("email") or None
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
@@ -58,6 +58,7 @@ def login_page(request):
 
         password = request.POST.get("password")
 
+        login_input = login_input.strip()
         try:
 
             if '@' in login_input:
@@ -72,7 +73,7 @@ def login_page(request):
 
             user = authenticate(
                 request,
-                username=user_obj.mobile_number,
+                username=user_obj.get_username(),
                 password=password
             )
 
