@@ -1,11 +1,13 @@
 .search-product-card {
     display: flex;
     flex-direction: column;
+   
 }
 
 .search-product-card .px-2 {
     margin-top: auto;
 }
+
 
 @media (max-width: 576px) {
 

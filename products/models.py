@@ -21,8 +21,39 @@ class Category(models.Model):
         return reverse('products:category', args=[self.slug])
 
 
+class SubCategory(models.Model):
+
+    category = models.ForeignKey(
+        Category,
+        related_name='subcategories',
+        on_delete=models.CASCADE
+    )
+
+    name = models.CharField(max_length=120)
+
+    slug = models.SlugField(max_length=140)
+
+    class Meta:
+        ordering = ['name']
+
+        unique_together = ['category', 'slug']
+
+        verbose_name_plural = 'subcategories'
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+
+    subcategory = models.ForeignKey(
+    SubCategory,
+    related_name='products',
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True
+)
     name = models.CharField(max_length=180)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField()
@@ -41,3 +72,29 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('products:detail', args=[self.slug])
+
+
+class ProductImage(models.Model):
+
+    product = models.ForeignKey(
+        Product,
+        related_name='images',
+        on_delete=models.CASCADE
+    )
+
+    image = models.ImageField(
+        upload_to='products/gallery/'
+    )
+
+    alt_text = models.CharField(
+        max_length=120,
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+
+        return self.product.name

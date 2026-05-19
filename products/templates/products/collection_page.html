@@ -2,37 +2,39 @@
 
 {% block body %}
 
-<section class="container product-section">
+<section class="container py-5">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="section-title">
 
-        <h2 class="mb-0">
-            All Products
-        </h2>
-    </div>
+        <span>
+            {{ section_slug|title }}
+        </span>
 
-    <div class="row g-4 product-grid">
+    </h1>
+
+    <div class="row g-4">
 
         {% for product in products %}
 
-        <div class="col-6 col-md-4 col-lg-3 col-xl-3">
+        <div class="col-6 col-lg-4 col-xl-3">
 
             <div class="product-card">
 
-                <!-- Product Link -->
                 <a href="{{ product.get_absolute_url }}"
                    class="product-card-link">
 
+                    {% if product.image %}
+
                     <img src="{{ product.image.url }}"
                          alt="{{ product.name }}">
+
+                    {% endif %}
 
                     <div class="product-card-body">
 
                         <div class="product-info">
 
-                            <h3>
-                                {{ product.name }}
-                            </h3>
+                            <h3>{{ product.name }}</h3>
 
                             <strong>
                                 Rs. {{ product.price }}
@@ -44,7 +46,6 @@
 
                 </a>
 
-                <!-- Add To Cart -->
                 <div class="px-3 pb-3">
 
                     <form action="{% url 'cart:add' product.id %}"
@@ -69,13 +70,7 @@
 
         {% empty %}
 
-        <div class="col-12 text-center">
-
-            <p class="text-muted">
-                No products available.
-            </p>
-
-        </div>
+        <p>No products available.</p>
 
         {% endfor %}
 

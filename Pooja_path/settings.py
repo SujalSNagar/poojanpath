@@ -1,5 +1,9 @@
 import dj_database_url
 
+import os
+
+from pathlib import Path
+
 
 """
 Django settings for Pooja_path project.
@@ -49,6 +53,7 @@ INSTALLED_APPS = [
     'products',
     'cart',
     'accounts',
+    'orders'
 ]
 
 MIDDLEWARE = [
@@ -148,3 +153,12 @@ AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ] 
+
+
+RAZORPAY_KEY_ID = os.getenv(
+    'RAZORPAY_KEY_ID'
+)
+
+RAZORPAY_KEY_SECRET = os.getenv(
+    'RAZORPAY_KEY_SECRET'
+)

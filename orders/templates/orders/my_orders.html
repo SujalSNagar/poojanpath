@@ -1,0 +1,167 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet"
+      href="{% static 'css/my_orders.css' %}">
+
+<section class="orders-section container">
+
+    <div class="orders-header">
+
+        <h1>
+            My Orders
+        </h1>
+
+    </div>
+
+    {% if orders %}
+
+        <div class="orders-list">
+
+            {% for order in orders %}
+
+                <div class="order-card">
+
+                    <div class="order-image">
+                        <img src="{{ order.items.first.product.image.url }}"
+                             alt="{{ order.items.first.product.name }}" loading="lazy" decoding="async">
+
+                    </div>
+
+                    <div class="order-content">
+
+                        <div class="order-top">
+
+                            <div>
+
+                                <small>
+                                    Order #{{ order.id }}
+                                </small>
+
+                                <h3>
+
+                                    {{ order.items.first.product.name }}
+
+                                    {% if order.items.count > 1 %}
+
+                                        + {{ order.items.count|add:'-1' }}
+                                        more item{{ order.items.count|add:'-1'|pluralize }}
+
+                                    {% endif %}
+
+                                </h3>
+
+                            </div>
+
+                            <span class="status-badge">
+
+                                {{ order.order_status }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="order-info">
+
+                            <p>
+
+                                Ordered on :
+                                {{ order.created_at|date:"d M Y" }}
+
+                            </p>
+
+                            <p>
+
+                                Payment Method :
+
+                                {{ order.get_payment_method_display }}
+
+                            </p>
+
+                            <p>
+                            
+                                Payment Status :
+                            
+                                {% if order.payment_status == 'paid' %}
+                            
+                                    <span class="payment-paid">
+                                    
+                                        Paid
+                                    
+                                    </span>
+
+                                
+                                {% elif order.payment_status == 'failed' %}
+                                
+                                    <span class="payment-failed">
+                                    
+                                        Failed
+                                    
+                                    </span>
+                                
+                                {% else %}
+                                
+                                    <span class="payment-pending">
+                                    
+                                        Pending
+                                    
+                                    </span>
+
+                                {% endif %}
+                                
+                            </p>
+
+                            {% if order.order_status == 'confirmed' or order.order_status == 'pending' %}
+
+                                <p>
+                                
+                                    Delivery :
+                                
+                                    {{ order.estimated_delivery_date }}
+                                
+                                </p>
+                            
+                            {% endif %}
+
+                            <p>
+
+                                Total :
+                                ₹ {{ order.total_price }}
+
+                            </p>
+
+                        </div>
+
+                        <a href="{% url 'orders:order_detail' order.id %}"
+                           class="btn btn-main">
+
+                            View Details
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-orders">
+
+            <h2>
+                No Orders Yet
+            </h2>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock body %}

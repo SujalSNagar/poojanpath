@@ -1,34 +1,114 @@
 {% extends 'core/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+<link rel="stylesheet"
+      href="{% static 'css/home.css' %}">
+
+{% endblock extra_css %}
 
 {% block body %}
 
-{% load static %}
-<section class="hero-full">
-    <img src="{% static 'images/banner3.png' %}" class="hero-banner" alt="Pooja samagri banner">
-    <div class="hero-content">
-        <h1>Pavitra Pooja Samagri</h1>
-        <p class="typing-text" id="typingText" aria-live="polite"></p>
-        <a href="{% url 'core:home' %}" class="btn btn-main">Shop Now</a>
+<section class="hero-full" id="hero-section">
+
+    <div id="heroCarousel"
+         class="carousel slide carousel-fade"
+         data-bs-ride="carousel"
+         data-bs-interval="3000">
+
+        <div class="carousel-inner">
+
+            <div class="carousel-item active">
+
+                <img src="{% static 'images/hero.webp' %}"
+                     class="hero-banner d-block w-100"
+                     alt="Banner 1">
+
+                 <div class="hero-caption">
+
+        <h1>Divine Fragrance</h1>
+
+        <p>Premium incense collection</p>
+
+        <a href="{% url 'products:collection_page' 'divine-fragrance' %}" class="btn btn-main">
+            Explore
+        </a>
+
     </div>
+
+            </div>
+
+            <div class="carousel-item">
+
+                <img src="{% static 'images/hero2.webp' %}"
+                     class="hero-banner d-block w-100"
+                     alt="Banner 2">
+
+                 <div class="hero-caption">
+
+        <h1>Temple Essentials</h1>
+
+        <p>Elegant sacred accessories</p>
+
+        <a class="btn btn-main" href="#temple-essentials-section">
+            Shop Now
+        </a>
+
+    </div>
+            </div>
+
+            <div class="carousel-item">
+
+                <img src="{% static 'images/sacred_rituals.jpeg' %}"
+                     class="hero-banner d-block w-100"
+                     alt="Banner 3">
+                
+                      <div class="hero-caption">
+
+        <h1>Sacred Rituals</h1>
+
+        <p>Traditional pooja essentials</p>
+
+        <a class="btn btn-main" href="{% url 'products:collection_page' 'sacred-rituals' %}">
+            Discover
+        </a>
+
+    </div>
+            </div>
+
+        </div>
+
+    </div>
+
 </section>
 
-<main class="container category-section">
+<main class="container category-section" id="categories-section">
 
-    <h2>Top Categories</h2>
+    <h2 class="section-title">
+        <span>Top Categories</span>
+    </h2>
+<div class="swiper custom-slider category-slider" data-desktop="5">
 
-<div class="category-slider d-flex flex-nowrap justify-content-xl-center overflow-auto gap-3 p-2">
-
+<div class="swiper-wrapper">
     {% for category in featured_categories %}
 
-   <div class="category-item flex-shrink-0">
+   <div class="swiper-slide category-item">
 
     <a href="{% url 'products:category_products' category.slug %}"
        class="category-card-link">
 
         <div class="category-card">
-
-            <img src="{{ category.image.url }}"
-                 alt="{{ category.name }}">
+            
+            <div class="category-image-wrapper">
+                {% if category.image %}
+                <img src="{{ category.image.url }}"
+                alt="{{ category.name }}" loading="lazy" decoding="async">
+                {% endif %}
+            </div>
 
             <h6>
                 {{ category.name }}
@@ -48,9 +128,15 @@
 
     </a>
 
-</div>
+    </div>
 
     {% endfor %}
+
+    </div>
+
+    <div class="swiper-button-prev"></div>
+
+    <div class="swiper-button-next"></div>
 
 </div>
 
@@ -65,13 +151,13 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{% static 'images/banner.png' %}" class="d-block w-100" alt="Pooja samagri collection">
+                <img src="{% static 'images/spiritual_decor.webp' %}" class="d-block w-100" alt="Pooja samagri collection" loading="lazy" decoding="async">
             </div>
             <div class="carousel-item">
-                <img src="{% static 'images/banner2.png' %}" class="d-block w-100" alt="Mandir decor collection">
+                <img src="{% static 'images/hero.webp' %}" class="d-block w-100" alt="Mandir decor collection" loading="lazy" decoding="async">
             </div>
             <div class="carousel-item">
-                <img src="{% static 'images/banner3.png' %}" class="d-block w-100" alt="Festival pooja essentials">
+                <img src="{% static 'images/hero2.webp' %}" class="d-block w-100" alt="Festival pooja essentials" loading="lazy" decoding="async">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#samagriCarousel" data-bs-slide="prev">
@@ -87,23 +173,29 @@
 
 <section class="container product-section">
 
-    <h2>Featured Products</h2>
+    <h2 class="section-title">
+        <span>Featured Products</span>
+    </h2>
 
-  <div class="row g-4 product-grid">
+  <div class="swiper custom-slider product-slider " data-desktop="4">
+
+    <div class="swiper-wrapper">
 
     {% for product in featured_products %}
 
-    <div class="col-6 col-md-4 col-lg-3 col-xl-3">
+    <div class="swiper-slide product-slide">
 
         <div class="product-card">
 
-            <!-- Full Card Clickable Area -->
+            
             <a href="{{ product.get_absolute_url }}"
                class="product-card-link">
 
-                <img src="{{ product.image.url }}"
-                     alt="{{ product.name }}">
-
+               {% if product.image %}
+               <img src="{{ product.image.url }}"
+               alt="{{ product.name }}" loading="lazy" decoding="async">
+               {% endif %}
+               
                 <div class="product-card-body">
 
                     <div class="product-info">
@@ -136,19 +228,311 @@
         </div>
 
     </div>
-
     {% endfor %}
 
-<a href="{% url 'products:all_products' %}"
-   class="btn btn-main see-all-btn">
+</div>
+<div class="swiper-button-prev"></div>
 
-    See All Products
-    <i class="bi bi-arrow-right"></i>
-
-</a>
+<div class="swiper-button-next"></div>
 
 </div>
 
+
+</section> 
+
+
+<section class="container promo-grid-section">
+
+    <div class="promo-grid">
+
+        <a href="{% url 'products:collection_page' 'divine-fragrance' %}"
+           class="promo-item">
+
+            <img src="{% static 'images/divine_fragrance.jpeg' %}"
+                 alt="Divine Fragrance" loading="lazy" decoding="async">
+
+            <div class="promo-overlay">
+
+                <h3>Divine Fragrance</h3>
+
+                <button class="btn btn-main">
+
+                    Explore
+
+                </button>
+
+            </div>
+
+        </a>
+
+        <a href="{% url 'products:collection_page' 'sacred-rituals' %}"
+           class="promo-item">
+
+            <img src="{% static 'images/sacred_rituals.jpeg' %}"
+                 alt="Premium Resin Idols" loading="lazy" decoding="async">
+
+            <div class="promo-overlay">
+
+                <h3>Sacred Rituals</h3>
+
+                <button class="btn btn-main">
+
+                    Explore
+
+                </button>
+
+            </div>
+
+        </a>
+
+        <a href="{% url 'products:collection_page' 'temple-essentials' %}"
+           class="promo-item">
+
+            <img src="{% static 'images/temple_essential.jpeg' %}"
+                 alt="Temple Essentials" loading="lazy" decoding="async">
+
+            <div class="promo-overlay">
+
+                <h3>Temple Essentials</h3>
+
+                <button class="btn btn-main">
+
+                    Explore
+
+                </button>
+
+            </div>
+
+        </a>
+
+        <a href="{% url 'products:collection_page' 'spiritual-decor' %}"
+           class="promo-item">
+
+    <img src="{% static 'images/spiritual_decor.webp' %}"
+         alt="Silver Plated Idols" loading="lazy" decoding="async">
+
+    <div class="promo-overlay">
+
+        <h3>Spiritual Decor</h3>
+
+        <button class="btn btn-main">
+
+            Explore
+
+        </button>
+
+    </div>
+
+</a>
+
+        <a href="{% url 'products:collection_page' 'new-arrivals' %}"
+           class="promo-item wide">
+
+            <img src="{% static 'images/banner.png' %}"
+                 alt="Latest Arrivals" loading="lazy" decoding="async">
+
+            <div class="promo-overlay">
+
+                <h3>New Arrivals</h3>
+
+                <button class="btn btn-main">
+
+                    Explore
+
+                </button>
+
+            </div>
+
+        </a>
+
+    </div>
+
 </section>
+
+<section class="container collection-section"
+         id="temple-essentials-section">
+
+    <h2 class="section-title">
+        <span>Temple Essentials</span>
+    </h2>
+
+    <div class="collection-grid">
+
+        {% for product in temple_essentials %}
+
+        <div class="collection-card">
+
+            <a href="{{ product.get_absolute_url }}"
+               class="collection-card-link">
+
+                {% if product.image %}
+
+                <div class="collection-image">
+
+                    <img src="{{ product.image.url }}"
+                         alt="{{ product.name }}" loading="lazy" decoding="async">
+
+                </div>
+
+                {% endif %}
+
+                <div class="collection-body">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <strong>
+                        Rs. {{ product.price }}
+                    </strong>
+
+                    <button class="btn btn-main w-100">
+
+                        Shop Now
+
+                    </button>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<section class="container showcase-section"
+         id="divine-fragrance-section">
+
+    <div class="showcase-grid">
+
+        <div class="showcase-image">
+
+            <img src="{% static 'images/divine_fragrance.jpeg' %}"
+                 alt="Divine Fragrance" loading="lazy" decoding="async">
+
+        </div>
+
+        <div class="showcase-content">
+
+            <h2>Divine Fragrance</h2>
+
+            <p>
+                Experience the essence of devotion with our Divine
+                Fragrance collection, featuring premium agarbatti and
+                dhoop crafted to create a peaceful and spiritually
+                uplifting atmosphere for every ritual.
+            </p>
+
+            <a href="{% url 'products:collection_page' 'divine-fragrance' %}"
+               class="btn btn-main">
+
+                Shop Collection
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="container collection-section"
+         id="temple-essentials-section">
+
+    <h2 class="section-title">
+        <span>Pooja Samagri</span>
+    </h2>
+
+    <div class="collection-grid">
+
+        {% for product in pooja_samagri %}
+
+        <div class="collection-card">
+
+            <a href="{{ product.get_absolute_url }}"
+               class="collection-card-link">
+
+                {% if product.image %}
+
+                <div class="collection-image">
+
+                    <img src="{{ product.image.url }}"
+                         alt="{{ product.name }}" loading="lazy" decoding="async">
+
+                </div>
+
+                {% endif %}
+
+                <div class="collection-body">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <strong>
+                        Rs. {{ product.price }}
+                    </strong>
+
+                    <button class="btn btn-main w-100">
+
+                        Shop Now
+
+                    </button>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<section class="container showcase-section"
+         id="divine-fragrance-section">
+
+    <div class="showcase-grid">
+
+        <div class="showcase-image">
+
+            <img src="{% static 'images/brass_stand2.jpg' %}"
+                 alt="Divine Fragrance" loading="lazy" decoding="async">
+
+        </div>
+
+        <div class="showcase-content">
+
+            <h2>Brass Collections</h2>
+
+            <p>
+                Discover the timeless beauty of our Brass Collection, featuring elegantly handcrafted pooja essentials designed to bring tradition, warmth, and spiritual charm to every sacred ritual and temple space.
+            </p>
+
+            <a href="{% url 'products:collection_page' 'brass-collection' %}"
+               class="btn btn-main">
+
+                Shop Collection
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script src="{% static 'js/home.js' %}"></script>
+
+{% endblock extra_js %}
 
 {% endblock body %}

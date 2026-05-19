@@ -1,0 +1,78 @@
+{% extends "core/base.html" %}
+
+{% block body %}
+
+<div class="container py-5 text-center">
+
+    <h2>
+        Redirecting to Payment...
+    </h2>
+    <h3>
+        Please Wait...
+    </h3>
+
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+    const verifyUrl =
+    "{% url 'orders:verify_payment' %}"
+
+    const options = {
+
+        key: "{{ razorpay_key }}",
+
+        amount: "{{ payment.amount }}",
+
+        currency: "INR",
+
+        name: "Pooja Path Samagri",
+
+        description: "Order Payment",
+
+        order_id: "{{ payment.id }}",
+
+        handler: function(response){
+
+            window.location.href =
+
+            verifyUrl
+
+            + "?payment_id="
+
+            + response.razorpay_payment_id
+
+            + "&order_id="
+
+            + response.razorpay_order_id
+
+            + "&signature="
+
+            + response.razorpay_signature
+        },
+
+theme: {
+
+    color: "#9b111e"
+},
+
+modal: {
+
+    ondismiss: function(){
+
+        window.location.href =
+
+        "{% url 'orders:payment_failed' order.id %}"
+    }
+}
+    }
+
+    const rzp = new Razorpay(options)
+
+    rzp.open()
+
+</script>
+
+{% endblock body %}

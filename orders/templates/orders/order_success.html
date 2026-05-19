@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet"
+      href="{% static 'css/order_success.css' %}">
+
+<section class="order-success-section container">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+
+            <i class="bi bi-check-circle-fill"></i>
+
+        </div>
+
+        <h1>
+            Order Placed Successfully
+        </h1>
+
+        <p>
+            Thank you for shopping with us.
+            Your order has been placed successfully
+            and will be processed soon.
+        </p>
+
+        <p class="delivery-info">
+
+    Expected Delivery :
+
+    <strong>
+        {{ estimated_delivery_date }}
+    </strong>
+
+</p>
+
+        <div class="success-actions">
+
+            <a href="{% url 'core:home' %}"
+               class="btn btn-main">
+
+                Continue Shopping
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock body %}

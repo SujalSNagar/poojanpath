@@ -6,17 +6,16 @@
 <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
 
 <section class="product-detail-section container">
-    <a href="{% url 'core:home' %}"
+    <a href="javascript:history.back()"
    class="back-btn">
 
     <i class="bi bi-arrow-left"></i>
     Back
+    </a>
 
-</a>
+    <div class="row g-4 align-items-start overflow-hidden">
 
-    <div class="row g-5 align-items-start">
-
-        <!-- Product Image -->
+        <!-- Product Image -->  
         <div class="col-lg-6">
 
             <div class="product-detail-image">
@@ -42,13 +41,6 @@
                     ₹ {{ product.price }}
                 </h3>
 
-                <h4 class="product-detail-heading">
-                    Product Details
-                </h4>
-                <p class="product-description">
-                    {{ product.description }}
-                </p>
-
                 {% if product.stock > 0 %}
                     <span class="stock in-stock">
                         In Stock
@@ -66,14 +58,19 @@
     <div class="product-actions">
 
         <button type="submit" class="btn btn-main">Add to Cart</button>
-
-        <button type="button" class="btn btn-buy-now"> Buy Now </button>
-
     </div>
 
-    </form>
+        </form>
 
-    </div>
+
+            <h4 class="product-detail-heading">
+                    Product Details
+                </h4>
+                <p class="product-description">
+                    {{ product.description }}
+                </p>
+
+        </div>
 
         </div>
 

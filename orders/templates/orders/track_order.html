@@ -1,0 +1,184 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet"
+      href="{% static 'css/track_order.css' %}">
+
+<section class="track-section container">
+
+    <div class="track-card">
+
+        <h1>
+            Track Your Order
+        </h1>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="track-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input type="text"
+                       name="mobile_number"
+                       required>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-main w-100">
+
+                Track Order
+
+            </button>
+
+        </form>
+
+        {% if error %}
+
+            <p class="track-error">
+                {{ error }}
+            </p>
+
+        {% endif %}
+
+ {% if orders %}
+
+    <div class="track-result">
+
+        {% for order in orders %}
+
+            <div class="tracked-order-card">
+
+                <h4>
+                    Order #{{ order.id }}
+                </h4>
+
+                <p class="order-status">
+                    Status :
+                    {{ order.order_status }}
+                </p>
+
+                            {% if order.order_status == 'confirmed' or order.order_status == 'pending' %}
+
+                                <p>
+                                
+                                    Delivery :
+                                
+                                    {{ order.estimated_delivery_date }}
+                                
+                                </p>
+                            
+                            {% endif %}
+
+
+                <p>
+                    Total :
+                    ₹ {{ order.total_price }}
+                </p>
+
+                <div class="tracked-products">
+
+                    {% for item in order.items.all %}
+
+                        <div class="tracked-product">
+
+                            <img src="{{ item.product.image.url }}"
+                                 alt="{{ item.product.name }}">
+
+                            <div>
+
+                                <h4>
+                                    {{ item.product.name }}
+                                </h4>
+
+                                <p>
+                                    Qty :
+                                    {{ item.quantity }}
+                                </p>
+
+                            </div>
+
+                            <strong>
+                                ₹ {{ item.total_price }}
+                            </strong>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <p>
+
+                    Delivery Address :
+
+                    {{ order.address }},
+
+                    {{ order.city }}
+
+                </p>
+
+                <p>
+
+                    Payment :
+
+                    {{ order.payment_method }}
+
+                </p>
+
+                                            <p>
+                            
+                                Payment Status :
+                            
+                                {% if order.payment_status == 'paid' %}
+                            
+                                    <span class="payment-paid">
+                                    
+                                        Paid
+                                    
+                                    </span>
+
+                                
+                                {% elif order.payment_status == 'failed' %}
+                                
+                                    <span class="payment-failed">
+                                    
+                                        Failed
+                                    
+                                    </span>
+                                
+                                {% else %}
+                                
+                                    <span class="payment-pending">
+                                    
+                                        Pending
+                                    
+                                    </span>
+
+                                {% endif %}
+                                
+                            </p>
+
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}
+
+    </div>
+
+</section>
+
+{% endblock body %}

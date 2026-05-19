@@ -1,0 +1,353 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet"
+      href="{% static 'css/checkout.css' %}">
+
+<section class="checkout-section container">
+
+    {% if messages %}
+
+<div class="container mt-3">
+
+    {% for message in messages %}
+
+<div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+    <div class="checkout-header">
+
+        <a href="{% url 'cart:detail' %}"
+           class="back-btn">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Back to Cart
+
+        </a>
+
+        <h1>
+            Checkout
+        </h1>
+
+    </div>
+
+    <div class="checkout-wrapper">
+
+        <!-- Left -->
+
+        <div class="checkout-form-area">
+
+            <h2>
+                Billing Details
+            </h2>
+
+
+    {% if saved_addresses %}
+
+    <div class="saved-addresses">
+
+    <h3>
+        Saved Addresses
+    </h3>
+
+    {% for address in saved_addresses %}
+
+        <label class="saved-address-card" 
+            data-full-name="{{ address.full_name }}"
+            data-mobile="{{ address.mobile_number }}"
+            data-email="{{ address.user.email|default:'' }}"
+            data-address="{{ address.address }}"
+            data-city="{{ address.city }}"
+            data-state="{{ address.state }}"
+            data-postal="{{ address.postal_code }}"
+        >
+
+            <input type="radio"
+                   name="saved_address"
+                   value="{{ address.id }}">
+
+            <div>
+
+                <strong>
+                    {{ address.full_name }}
+                </strong>
+
+                <p>
+
+                    {{ address.address }},
+
+                    {{ address.city }},
+
+                    {{ address.get_state_display }}
+
+                    -
+
+                    {{ address.postal_code }}
+
+                </p>
+
+                <span>
+                    {{ address.mobile_number }}
+                </span>
+
+            </div>
+
+        </label>
+
+    {% endfor %}
+
+</div>
+
+<div class="or-divider">
+
+    OR ADD NEW ADDRESS
+
+</div>
+
+{% endif %}
+    <form method="post">
+
+    {% csrf_token %}
+
+    <div class="checkout-group">
+
+        <label>
+            Full Name
+        </label>
+
+        {{ form.full_name }}
+
+        {{ form.full_name.errors }}
+
+    </div>
+
+    <div class="checkout-group">
+
+        <label>
+            Mobile Number
+        </label>
+
+        {{ form.mobile_number }}
+
+        {{ form.mobile_number.errors }}
+
+    </div>
+
+    <div class="checkout-group">
+
+        <label>
+            Email Address
+        </label>
+
+        {{ form.email }}
+
+        {{ form.email.errors }}
+
+    </div>
+
+    <div class="checkout-group">
+
+        <label>
+            Address
+        </label>
+
+        {{ form.address }}
+
+        {{ form.address.errors }}
+
+    </div>
+
+    <div class="checkout-row">
+
+        <div class="checkout-group">
+
+            <label>
+                City
+            </label>
+
+            {{ form.city }}
+
+            {{ form.city.errors }}
+
+        </div>
+
+        <div class="checkout-group">
+
+            <label>
+                State
+            </label>
+
+            {{ form.state }}
+
+            {{ form.state.errors }}
+
+        </div>
+
+    </div>
+
+    <div class="checkout-group">
+
+        <label>
+            Postal Code
+        </label>
+
+        {{ form.postal_code }}
+
+        {{ form.postal_code.errors }}
+
+    </div>
+
+    <div class="payment-method">
+
+        <h3>
+            Payment Method
+        </h3>
+
+        {{ form.payment_method }}
+
+    </div>
+
+    <button type="submit"
+            class="btn btn-main w-100">
+
+        Place Order
+
+    </button>
+
+</form>
+        </div>
+
+        <!-- Right -->
+
+        <div class="checkout-summary">
+
+            <h2>
+                Order Summary
+            </h2>
+
+            <div class="delivery-date">
+
+                Estimated Delivery :
+
+                <strong>
+                    {{ estimated_delivery_date }}
+                </strong>
+            
+            </div>
+
+            {% for item in cart %}
+
+                <div class="summary-card">
+
+                    <img src="{{ item.product.image.url }}"
+                         alt="{{ item.product.name }}">
+
+                    <div>
+
+                        <h4>
+                            {{ item.product.name }}
+                        </h4>
+
+                        <p>
+                            Qty :
+                            {{ item.quantity }}
+                        </p>
+
+                    </div>
+
+                    <strong>
+                        ₹ {{ item.total_price }}
+                    </strong>
+
+                </div>
+
+            {% endfor %}
+
+            <div class="summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ₹ {{ cart_total }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% block extra_js %}
+
+
+
+<script>
+
+    const savedAddresses = document.querySelectorAll(
+        'input[name="saved_address"]'
+    )
+
+    savedAddresses.forEach((radio) => {
+
+        radio.addEventListener('change', () => {
+
+            const card = radio.closest(
+                '.saved-address-card'
+            )
+
+            document.getElementById(
+                'id_full_name'
+            ).value = card.dataset.fullName
+
+            document.getElementById(
+                'id_mobile_number'
+            ).value = card.dataset.mobile
+
+            document.getElementById(
+                'id_email'
+            ).value = card.dataset.email
+
+            document.getElementById(
+                'id_address'
+            ).value = card.dataset.address
+
+            document.getElementById(
+                'id_city'
+            ).value = card.dataset.city
+
+            document.getElementById(
+                'id_state'
+            ).value = card.dataset.state
+
+            document.getElementById(
+                'id_postal_code'
+            ).value = card.dataset.postal
+
+        })
+
+    })
+
+</script>
+{% endblock extra_js %}
+
+{% endblock body %}

@@ -45,10 +45,33 @@ class Cart:
 
         self.save()
 
+    def decrease(self, product):
 
-    def save(self):
+        product_id = str(product.id)
 
-        self.session.modified = True
+        if product_id in self.cart:
+
+            self.cart[product_id]['quantity'] -= 1
+
+            if self.cart[product_id]['quantity'] <= 0:
+
+                del self.cart[product_id]
+
+            self.save()
+
+
+
+    def increase(self, product):
+
+        product_id = str(product.id)
+
+        if product_id in self.cart:
+
+            if self.cart[product_id]['quantity'] < 10:
+
+                self.cart[product_id]['quantity'] += 1
+
+            self.save()
 
 
     def remove(self, product):
@@ -61,6 +84,9 @@ class Cart:
 
             self.save()
 
+    def save(self):
+
+        self.session.modified = True
 
     def __iter__(self):
 
@@ -85,7 +111,6 @@ class Cart:
             )
 
             yield item
-
 
     def __len__(self):
 

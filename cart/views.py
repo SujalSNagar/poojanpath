@@ -29,6 +29,35 @@ def cart_add(request, product_id):
     return redirect('cart:detail')
 
 
+def cart_increase(request, product_id):
+
+    cart = Cart(request)
+
+    product = get_object_or_404(
+        Product,
+        id=product_id
+    )
+
+    cart.increase(product)
+
+    return redirect('cart:detail')
+
+
+
+def cart_decrease(request, product_id):
+
+    cart = Cart(request)
+
+    product = get_object_or_404(
+        Product,
+        id=product_id
+    )
+
+    cart.decrease(product)
+
+    return redirect('cart:detail')
+
+
 def cart_remove(request, product_id):
 
     cart = Cart(request)

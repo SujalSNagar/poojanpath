@@ -4,9 +4,18 @@
 
 <section class="container product-section">
 
-    <h2>
-        {{ category.name }}
+    
+    <h2 class="section-title my-5">
+        <span>
+            {{ category.name }}
+        </span>
     </h2>
+    <a href="javascript:history.back()"
+  class="back-btn">
+
+   <i class="bi bi-arrow-left"></i>
+   Back
+   </a>
 
     <div class="row g-4 product-grid">
 
@@ -21,7 +30,7 @@
                    class="product-card-link">
 
                     <img src="{{ product.image.url }}"
-                         alt="{{ product.name }}">
+                         alt="{{ product.name }}" loading="lazy" decoding="async">
 
                     <div class="product-card-body">
 

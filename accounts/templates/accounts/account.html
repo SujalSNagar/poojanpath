@@ -1,0 +1,142 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet"
+      href="{% static 'css/account.css' %}">
+
+<section class="account-section container">
+
+    <div class="account-header">
+
+        <h1>
+            My Account
+        </h1>
+
+        <p>
+            Welcome back,
+            {{ request.user.mobile_number }}
+        </p>
+
+    </div>
+
+
+
+        <div class="account-card">
+
+            <h3>
+                Account Details
+            </h3>
+
+            <div class="account-info">
+
+                <p>
+
+                    <strong>
+                        Mobile No. :
+                    </strong>
+
+                    {{ request.user.mobile_number }}
+
+                </p>
+
+                <p>
+
+                    <strong>
+                        Email :
+                    </strong>
+
+                    {{ request.user.email|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    <div class="account-links">
+
+        <a href="{% url 'orders:my_orders' %}"
+           class="account-link-card">
+
+            <i class="bi bi-bag-check"></i>
+
+            <span>
+                My Orders
+            </span>
+
+        </a>
+
+        <a href="{% url 'orders:track_order' %}"
+           class="account-link-card">
+
+            <i class="bi bi-truck"></i>
+
+            <span>
+                Track Orders
+            </span>
+
+        </a>
+
+        <a href="{% url 'accounts:logout_page' %}"
+           class="account-link-card logout-card">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+    <!-- Recent Orders -->
+
+    {% if recent_orders %}
+
+    <div class="recent-orders">
+
+        <h2>
+            Recent Orders
+        </h2>
+
+        {% for order in recent_orders %}
+
+            <div class="recent-order-card">
+
+                <div>
+
+                    <h4>
+
+                        {{ order.created_at|date:"d M Y" }}
+
+                    </h4>
+
+                    <p>
+
+                        {{ order.get_order_status_display }}
+
+                    </p>
+
+                </div>
+
+                <strong>
+
+                    ₹ {{ order.total_price }}
+
+                </strong>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock body %}

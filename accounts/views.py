@@ -13,7 +13,13 @@ def signup_page(request):
     if request.method == "POST":
 
         mobile = request.POST.get("mobile_number")
-        email = request.POST.get("email") or None
+        email = request.POST.get("email")
+        if email:
+            email = email.strip().lower()
+
+        else:
+            email = None
+
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
@@ -58,7 +64,7 @@ def login_page(request):
 
         password = request.POST.get("password")
 
-        login_input = login_input.strip()
+        login_input = login_input.strip().lower()
         try:
 
             if '@' in login_input:
@@ -100,6 +106,46 @@ def login_page(request):
     return render(
         request,
         "accounts/login.html"
+    )
+
+from django.contrib.auth.decorators import login_required
+
+from django.shortcuts import render
+
+from orders.models import Order, Address
+
+
+@login_required
+def account_page(request):
+
+    orders_count = Order.objects.filter(
+        user=request.user
+    ).count()
+
+    addresses_count = Address.objects.filter(
+        user=request.user
+    ).count()
+
+    recent_orders = Order.objects.filter(
+        user=request.user
+    )[:3]
+
+    context = {
+
+        'orders_count': orders_count,
+
+        'addresses_count': addresses_count,
+
+        'recent_orders': recent_orders,
+    }
+
+    return render(
+
+        request,
+
+        'accounts/account.html',
+
+        context
     )
 
 def logout_page(request):

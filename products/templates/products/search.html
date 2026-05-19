@@ -9,15 +9,15 @@
 
 <section class="container py-5">
 
-    <h2 class="mb-4">
-        Search Results
+    <h2 class="mb-4 text-primary-color">
+        Search Results for : {{ query }}
     </h2>
 
     <div class="row g-4">
 
         {% for product in products %}
 
-        <div class="col-4 col-lg-4 col-xl-3">
+        <div class="col-4 col-lg-4 col-xl-3 mb-5">
 
             <div class="product-card search-product-card">
 
@@ -25,7 +25,7 @@
                    class="product-card-link">
 
                     <img src="{{ product.image.url }}"
-                         alt="{{ product.name }}">
+                         alt="{{ product.name }}" loading="lazy" decoding="async">
 
                     <div class="product-card-body">
 

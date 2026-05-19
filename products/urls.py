@@ -14,4 +14,10 @@ urlpatterns = [
     path('category/<slug:slug>/',views.category_products,name='category_products'),
     path('<slug:slug>/', views.product_detail, name='detail'),
 
+    path(
+    'collection/<slug:section_slug>/',
+    views.collection_page,
+    name='collection_page'
+),
+
 ]

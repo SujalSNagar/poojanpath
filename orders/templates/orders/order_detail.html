@@ -1,0 +1,145 @@
+{% extends "core/base.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet"
+      href="{% static 'css/order_detail.css' %}">
+
+<section class="order-detail-section container">
+
+    <div class="detail-header">
+
+        <span class="status-badge">
+            {{ order.order_status }}
+        </span>
+
+    </div>
+
+    <div class="detail-grid">
+
+        <div class="detail-products">
+
+            <h2>
+                Products
+            </h2>
+
+            {% for item in order.items.all %}
+
+                <div class="detail-card">
+
+                    <img src="{{ item.product.image.url }}"
+                         alt="{{ item.product.name }}" loading="lazy" decoding="async">
+
+                    <div>
+
+                        <h4>
+                            {{ item.product.name }}
+                        </h4>
+
+                        <p>
+                            Qty : {{ item.quantity }}
+                        </p>
+
+                    </div>
+
+                    <strong>
+                        ₹ {{ item.total_price }}
+                    </strong>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="detail-summary">
+
+            <h2>
+                Delivery Details
+            </h2>
+
+            <p>
+                {{ order.full_name }}
+            </p>
+
+            <p>
+                {{ order.address }}
+            </p>
+
+            <p>
+                {{ order.city }}
+                -
+                {{ order.postal_code }}
+            </p>
+
+            <p>
+                {{ order.mobile_number }}
+            </p>
+
+            <p>
+
+                Ordered on :
+                {{ order.created_at|date:"d M Y" }}
+            </p>
+
+            <hr>
+
+            <p>
+                Payment :
+                {{ order.payment_method }}
+            </p>
+
+            <p>
+            
+                Payment Status :
+            
+                {% if order.payment_status == 'paid' %}
+            
+                    <span class="payment-paid">
+                    
+                        Paid
+                    
+                    </span>
+                
+                {% elif order.payment_status == 'failed' %}
+                
+                    <span class="payment-failed">
+                    
+                        Failed
+                    
+                    </span>
+                
+                {% else %}
+                
+                    <span class="payment-pending">
+                    
+                        Pending
+                    
+                    </span>
+                {% endif %}
+                
+            </p>
+            {% if order.order_status == 'confirmed' or order.order_status == 'pending' %}
+                <p>
+                
+                    Delivery :
+                
+                    {{ order.estimated_delivery_date }}
+                
+                </p>
+            
+            {% endif %}
+
+            <h3>
+                ₹ {{ order.total_price }}
+            </h3>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock body %}
