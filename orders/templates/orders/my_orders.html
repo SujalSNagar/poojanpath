@@ -21,134 +21,200 @@
 
         <div class="orders-list">
 
-            {% for order in orders %}
+    {% for order in orders %}
 
-                <div class="order-card">
+        <div class="order-card">
+            
+            <div class="order-image">
+                <a href="{% url 'orders:order_detail' order.id %}">
 
-                    <div class="order-image">
-                        <img src="{{ order.items.first.product.image.url }}"
-                             alt="{{ order.items.first.product.name }}" loading="lazy" decoding="async">
+                    <img src="{{ order.items.first.product.image.url }}"
+                    alt="{{ order.items.first.product.name }}"
+                    loading="lazy"
+                    decoding="async">
+                </a>
 
-                    </div>
+            </div>
 
-                    <div class="order-content">
+            <div class="order-content">
 
-                        <div class="order-top">
+                <div class="order-top">
 
-                            <div>
+                    <div>
 
-                                <small>
-                                    Order #{{ order.id }}
-                                </small>
+                        <small>
+                            Order #{{ order.id }}
+                        </small>
+                        <a href="{% url 'orders:order_detail' order.id %}">
+                        <h3>
 
-                                <h3>
+                            {{ order.items.first.product.name }}
 
-                                    {{ order.items.first.product.name }}
+                            {% if order.items.count > 1 %}
 
-                                    {% if order.items.count > 1 %}
+                                + {{ order.items.count|add:'-1' }}
+                                more item{{ order.items.count|add:'-1'|pluralize }}
 
-                                        + {{ order.items.count|add:'-1' }}
-                                        more item{{ order.items.count|add:'-1'|pluralize }}
-
-                                    {% endif %}
-
-                                </h3>
-
-                            </div>
-
-                            <span class="status-badge">
-
-                                {{ order.order_status }}
-
-                            </span>
-
-                        </div>
-
-                        <div class="order-info">
-
-                            <p>
-
-                                Ordered on :
-                                {{ order.created_at|date:"d M Y" }}
-
-                            </p>
-
-                            <p>
-
-                                Payment Method :
-
-                                {{ order.get_payment_method_display }}
-
-                            </p>
-
-                            <p>
-                            
-                                Payment Status :
-                            
-                                {% if order.payment_status == 'paid' %}
-                            
-                                    <span class="payment-paid">
-                                    
-                                        Paid
-                                    
-                                    </span>
-
-                                
-                                {% elif order.payment_status == 'failed' %}
-                                
-                                    <span class="payment-failed">
-                                    
-                                        Failed
-                                    
-                                    </span>
-                                
-                                {% else %}
-                                
-                                    <span class="payment-pending">
-                                    
-                                        Pending
-                                    
-                                    </span>
-
-                                {% endif %}
-                                
-                            </p>
-
-                            {% if order.order_status == 'confirmed' or order.order_status == 'pending' %}
-
-                                <p>
-                                
-                                    Delivery :
-                                
-                                    {{ order.estimated_delivery_date }}
-                                
-                                </p>
-                            
                             {% endif %}
 
-                            <p>
-
-                                Total :
-                                ₹ {{ order.total_price }}
-
-                            </p>
-
-                        </div>
-
-                        <a href="{% url 'orders:order_detail' order.id %}"
-                           class="btn btn-main">
-
-                            View Details
-
-                        </a>
+                        </h3>
+                    </a>
 
                     </div>
+
+                    <span class="status-badge status-{{ order.order_status|lower }}">
+
+                        {{ order.order_status }}
+
+                    </span>
 
                 </div>
 
-            {% endfor %}
+                <div class="order-info">
+                    <a href="{% url 'orders:order_detail' order.id %}">
+
+                    <p>
+
+                        Ordered on :
+                        {{ order.created_at|date:"d M Y" }}
+
+                    </p>
+
+                    <p>
+
+                        Payment Method :
+                        {{ order.get_payment_method_display }}
+
+                    </p>
+
+                    <p>
+
+                        Payment Status :
+
+                        {% if order.payment_status == 'paid' %}
+
+                            <span class="payment-paid">
+
+                                Paid
+
+                            </span>
+
+                        {% elif order.payment_status == 'failed' %}
+
+                            <span class="payment-failed">
+
+                                Failed
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="payment-pending">
+
+                                Pending
+
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+                    {% if order.order_status == 'confirmed' or order.order_status == 'pending' %}
+
+                        <p>
+
+                            Delivery :
+                            {{ order.estimated_delivery_date|date:"d M Y" }}
+
+                        </p>
+
+                    {% endif %}
+
+                    <p>
+
+                        Total :
+                        ₹ {{ order.total_price }}
+
+                    </p>
+
+                </a>
+
+                </div>
+
+                <div class="order-actions">
+
+                    <a href="{% url 'orders:order_detail' order.id %}"
+                       class="btn btn-main">
+
+                        View Details
+
+                    </a>
+
+                    {% if order.order_status == 'pending' or order.order_status == 'confirmed' %}
+
+                        <button type="button"
+                                class="cancel-order-btn"
+
+                                onclick="openModal({{ order.id }})">
+
+                            Cancel Order
+
+                        </button>
+
+                        <div class="cancel-modal"
+                             id="cancelModal{{ order.id }}">
+
+                            <div class="cancel-modal-card">
+
+                                <h3>
+                                    Cancel Order?
+                                </h3>
+
+                                <p>
+                                    Are you sure you want to cancel this order?
+                                </p>
+
+                                <div class="cancel-modal-actions">
+
+                                    <button type="button"
+                                            class="modal-close-btn"
+
+                                            onclick="closeModal({{ order.id }})">
+
+                                        Keep Order
+
+                                    </button>
+
+                                    <form action="{% url 'orders:cancel_order' order.id %}"
+                                          method="post">
+
+                                        {% csrf_token %}
+
+                                        <button type="submit"
+                                                class="modal-cancel-btn">
+
+                                            Yes, Cancel
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
 
         </div>
+
+    {% endfor %}
+
 
     {% else %}
 
@@ -165,3 +231,29 @@
 </section>
 
 {% endblock body %}
+
+{% block extra_js %}
+
+<script>
+
+function openModal(orderId){
+
+    document.getElementById(
+
+        `cancelModal${orderId}`
+
+    ).style.display = 'flex'
+}
+
+function closeModal(orderId){
+
+    document.getElementById(
+
+        `cancelModal${orderId}`
+
+    ).style.display = 'none'
+}
+
+</script>
+
+{% endblock extra_js %}

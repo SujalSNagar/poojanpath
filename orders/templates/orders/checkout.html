@@ -15,7 +15,7 @@
 
     {% for message in messages %}
 
-<div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">
+<div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} d-flex justify-content-center align-items-center mb-4">
             {{ message }}
 
             <button type="button"
@@ -121,7 +121,7 @@
 </div>
 
 {% endif %}
-    <form method="post">
+    <form method="post" novalidate>
 
     {% csrf_token %}
 
@@ -133,7 +133,13 @@
 
         {{ form.full_name }}
 
-        {{ form.full_name.errors }}
+       {% for error in form.full_name.errors %}
+        
+        <p class="field-error">
+            {{ error }}
+        </p>
+
+        {% endfor %}
 
     </div>
 
@@ -193,7 +199,7 @@
                 State
             </label>
 
-            {{ form.state }}
+            {{ form.state }} 
 
             {{ form.state.errors }}
 
@@ -204,24 +210,100 @@
     <div class="checkout-group">
 
         <label>
-            Postal Code
+            Pin Code
         </label>
 
         {{ form.postal_code }}
 
-        {{ form.postal_code.errors }}
+        <p id="pincode-message"></p>
+
+        {{ form.postal_code.errors }} 
 
     </div>
+
+
 
     <div class="payment-method">
 
-        <h3>
-            Payment Method
-        </h3>
+    <h3>
+        Payment Method
+    </h3>
 
-        {{ form.payment_method }}
+    <div class="radio-group">
+
+        <label class="radio-box">
+
+            <input type="radio"
+                   name="payment_method"
+                   value="online">
+
+            <div class="radio-content">
+
+                <div class="radio-left">
+
+                    <span class="radio-circle"></span>
+
+                    <span class="radio-text">
+
+                        Razorpay Secure
+                        (UPI, Cards, Wallets)
+
+                    </span>
+
+                </div>
+
+                <div class="radio-icons">
+
+                    <img src="{% static 'images/upi.png' %}"
+                         alt="UPI">
+
+                    <img src="{% static 'images/rupay.png' %}"
+                         alt="Rupay">
+
+                    <img src="{% static 'images/visa.png' %}"
+                         alt="Visa">
+
+                    <img src="{% static 'images/mastercard.png' %}"
+                         alt="Mastercard">
+
+                </div>
+
+            </div>
+
+            <p class="radio-description">
+                You'll be redirected to Razorpay Secure (UPI, Cards, Int'l Cards, Wallets) to complete your purchase.
+            </p>
+
+        </label>
+
+        <label class="radio-box">
+
+            <input type="radio"
+                   name="payment_method"
+                   value="cod"
+                   checked>
+
+            <div class="radio-content">
+
+                <div class="radio-left">
+
+                    <span class="radio-circle"></span>
+
+                    <span class="radio-text">
+
+                        Cash on Delivery (COD)
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </label>
 
     </div>
+
+</div>
 
     <button type="submit"
             class="btn btn-main w-100">
@@ -290,12 +372,13 @@
                 </strong>
 
             </div>
-
+            
         </div>
-
+        
     </div>
-
+    
 </section>
+{% endblock body %}
 
 {% block extra_js %}
 
@@ -303,11 +386,12 @@
 
 <script>
 
-    const savedAddresses = document.querySelectorAll(
+// saved_address
+    const addressInputs = document.querySelectorAll(
         'input[name="saved_address"]'
     )
 
-    savedAddresses.forEach((radio) => {
+    addressInputs.forEach((radio) => {
 
         radio.addEventListener('change', () => {
 
@@ -347,7 +431,31 @@
 
     })
 
+
+
+// input_errors
+
+const fields = document.querySelectorAll(
+
+    '.checkout-group input, .checkout-group textarea, .checkout-group select'
+)
+
+fields.forEach((field) => {
+
+    field.addEventListener('input', () => {
+
+        const error = field.parentElement.querySelector(
+            '.field-error, .errorlist'
+        )
+
+        if(error){
+
+            error.style.display = 'none'
+        }
+
+    })
+
+})
+
 </script>
 {% endblock extra_js %}
-
-{% endblock body %}

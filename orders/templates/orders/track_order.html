@@ -60,8 +60,8 @@
                     Order #{{ order.id }}
                 </h4>
 
-                <p class="order-status">
-                    Status :
+                <p class="order-status status-badge status-{{ order.order_status|lower }}">
+                   Order Status :
                     {{ order.order_status }}
                 </p>
 

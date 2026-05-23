@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 
-from datetime import timedelta
+from datetime import timedelta,datetime
 
 from django.utils import timezone
 
@@ -34,6 +34,12 @@ def checkout_page(request):
 
         return redirect('cart:detail')
 
+
+    estimated_delivery_date = (
+    timezone.now().date()
+    + timedelta(days=8)
+    )
+
     saved_addresses = []
 
     if request.user.is_authenticated:
@@ -41,6 +47,7 @@ def checkout_page(request):
         saved_addresses = Address.objects.filter(
             user=request.user
         )
+
 
     if request.method == 'POST':
 
@@ -54,13 +61,6 @@ def checkout_page(request):
 
             order.total_price = (
                 cart.get_total_price()
-            )
-
-            estimated_delivery_date = (
-
-                timezone.now().date()
-
-                + timedelta(days=5)
             )
 
             order.estimated_delivery_date = (
@@ -89,20 +89,6 @@ def checkout_page(request):
 
                     total_price=item['total_price']
                 )
-
-                # UPDATE STOCK
-
-                product = item['product']
-
-                product.stock -= item['quantity']
-
-                if product.stock <= 0:
-
-                    product.stock = 0
-
-                    product.is_available = False
-
-                product.save()
 
             # SAVE ADDRESS
 
@@ -139,21 +125,20 @@ def checkout_page(request):
                         postal_code=order.postal_code
                     )
 
-            # ONLINE PAYMENT
-
             if order.payment_method == 'online':
 
                 client = razorpay.Client(
-
+                
                     auth=(
-
+                    
                         settings.RAZORPAY_KEY_ID,
 
                         settings.RAZORPAY_KEY_SECRET
                     )
                 )
-                payment = client.order.create({
 
+                payment = client.order.create({
+                
                     'amount': int(
                         order.total_price * 100
                     ),
@@ -170,19 +155,19 @@ def checkout_page(request):
                 order.save()
 
                 context = {
-
+                
                     'payment': payment,
 
                     'order': order,
 
                     'razorpay_key': (
-
+                    
                         settings.RAZORPAY_KEY_ID
                     )
                 }
 
                 return render(
-
+                
                     request,
 
                     'orders/payment.html',
@@ -190,9 +175,24 @@ def checkout_page(request):
                     context
                 )
 
+
             # COD FLOW
 
             if order.payment_method == 'cod':
+
+                for item in order.items.all():
+                
+                    product = item.product
+
+                    product.stock -= item.quantity
+
+                    if product.stock <= 0:
+                    
+                        product.stock = 0
+
+                        product.is_available = False
+
+                    product.save()
 
                 order.order_status = 'confirmed'
 
@@ -202,24 +202,15 @@ def checkout_page(request):
 
                 request.session[
                     'last_delivery_date'
-                ] = str(
-                    estimated_delivery_date
-                )
+                ]= estimated_delivery_date.isoformat()
 
                 return redirect(
                     'orders:success'
                 )
-
     else:
 
         form = CheckoutForm()
-
-    estimated_delivery_date = (
-
-        timezone.now().date()
-
-        + timedelta(days=5)
-    )
+        
 
     context = {
 
@@ -227,7 +218,7 @@ def checkout_page(request):
 
         'form': form,
 
-        'saved_addresses': saved_addresses,
+        'saved_addresses': saved_addresses, 
 
         'estimated_delivery_date':
         estimated_delivery_date,
@@ -292,6 +283,20 @@ def verify_payment(request):
             payment_id
         )
 
+        for item in order.items.all():
+
+            product = item.product
+
+            product.stock -= item.quantity
+
+            if product.stock <= 0:
+            
+                product.stock = 0
+
+                product.is_available = False
+
+            product.save()
+
         order.save()
 
         cart = Cart(request)
@@ -300,9 +305,8 @@ def verify_payment(request):
 
         request.session[
             'last_delivery_date'
-        ] = str(
-            order.estimated_delivery_date
-        )
+        ] = order.estimated_delivery_date.isoformat()
+    
 
         return redirect(
             'orders:success'
@@ -360,6 +364,12 @@ def order_success(request):
         'last_delivery_date'
     )
 
+    if estimated_delivery_date:
+
+        estimated_delivery_date = datetime.fromisoformat(
+            estimated_delivery_date
+        )
+
     return render(
 
         request,
@@ -399,6 +409,50 @@ def my_orders(request):
 
             'orders': orders
         }
+    )
+
+
+
+def cancel_order(request, order_id):
+
+    order = get_object_or_404(
+
+        Order,
+
+        id=order_id,
+
+        user=request.user
+    )
+
+    if order.order_status not in [
+
+        'pending',
+
+        'confirmed'
+    ]:
+
+        return redirect(
+            'orders:my_orders'
+        )
+
+    order.order_status = 'cancelled'
+
+    order.save()
+
+    # RESTORE STOCK
+
+    for item in order.items.all():
+
+        product = item.product
+
+        product.stock += item.quantity
+
+        product.is_available = True
+
+        product.save()
+
+    return redirect(
+        'orders:my_orders'
     )
 
 

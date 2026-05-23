@@ -41,31 +41,59 @@
                     ₹ {{ product.price }}
                 </h3>
 
+                <div class="stock-wrapper">
+
                 {% if product.stock > 0 %}
+
+                    <span>
+                        <i class="bi bi-box"></i>
+                        {{ product.stock }}
+                    </span>
                     <span class="stock in-stock">
                         In Stock
                     </span>
+
                 {% else %}
                     <span class="stock out-stock">
                         Out of Stock
                     </span>
                 {% endif %}
 
+                </div>
+
+        <p class="delivery-info">
+
+        <i class="bi bi-truck"></i>
+
+        Expected Delivery: <b>{{ start_date|date:"d M" }} - {{ end_date|date:"d M"}}</b>
+        </p>
+
     <form action="{% url 'cart:add' product.id %}" method="post">
 
-    {% csrf_token %}
+        {% csrf_token %}
 
-    <div class="product-actions">
+        <div class="product-actions">
 
-        <button type="submit" class="btn btn-main">Add to Cart</button>
-    </div>
+            {% if product.stock > 0 %}
+                {% if product.stock <= 10 %}
+                    <p>Only {{ product.stock }} item left ! </p>
+                {% endif %}
 
-        </form>
+                <button type="submit" class="btn btn-main">Add to Cart</button>
+            {% else %}
+
+                <button type="submit" class="btn btn-main btn-disabled" disabled>Out of Stock</button>
+
+            {% endif %}
 
 
-            <h4 class="product-detail-heading">
-                    Product Details
-                </h4>
+
+        </div>
+
+    </form>
+        
+
+        <h4 class="product-detail-heading">Product Details</h4>
                 <p class="product-description">
                     {{ product.description }}
                 </p>
@@ -77,5 +105,89 @@
     </div>
 
 </section>
+
+<section class="container related_products mt-5">
+
+        <h1 class="section-title">
+
+            <span>
+                You may also like 
+            </span>
+
+        </h1>
+
+        <p class="similar-product">
+            Similar products from
+            {{ product.category.name }}
+        </p>
+
+        <div class="row g-4">
+
+        {% for product in related_products %}
+
+        <div class="col-6 col-lg-4 col-xl-3">
+
+            <div class="product-card">
+
+                <a href="{{ product.get_absolute_url }}"
+                   class="product-card-link">
+
+                    {% if product.image %}
+
+                    <img src="{{ product.image.url }}"
+                         alt="{{ product.name }}">
+
+                    {% endif %}
+
+                    <div class="product-card-body">
+
+                        <div class="product-info">
+
+                            <h3>{{ product.name }}</h3>
+
+                            <strong>
+                                Rs. {{ product.price }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+                <div class="px-3 pb-3">
+
+                    <form action="{% url 'cart:add' product.id %}"
+                          method="post">
+
+                        {% csrf_token %}
+
+                        <button type="submit"
+                                class="btn btn-main w-100 py-2">
+
+                            Add to Cart
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>No products available.</p>
+
+        {% endfor %}
+
+    </div>
+
+
+</section>
+
+
 
 {% endblock body %}

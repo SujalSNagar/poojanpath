@@ -78,8 +78,8 @@
 
                             <a href="{% url 'cart:remove' item.product.id %}"
                                class="remove-btn">
-
-                                Remove
+                                <i class="bi bi-trash"></i>
+                                Remove 
 
                             </a>
 
@@ -110,6 +110,10 @@
 
                     <strong>₹ {{ cart_total }}</strong>
 
+                </div>
+
+                <div class="delivery_date">
+                    <p>Expected Delivery : <b></b></p>
                 </div>
 
                 <a href="{% url 'orders:checkout' %}"

@@ -15,4 +15,13 @@ urlpatterns = [
 
     path('track/',views.track_order,name='track_order'),
 
+    path(
+
+    'cancel/<int:order_id>/',
+
+    views.cancel_order,
+
+    name='cancel_order'
+),
+
 ]

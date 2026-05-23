@@ -36,6 +36,51 @@
     font-weight: bold;
 }
 
+.status-badge{
+    padding: 0.45rem 0.9rem;
+
+    border-radius: 999px;
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+    text-transform: capitalize;
+
+    white-space: nowrap;
+}
+
+.status-confirmed{
+    background: #dcfce7;
+
+    color: #15803d;
+}
+
+.status-pending{
+    background: #fef3c7;
+
+    color: #b45309;
+}
+
+.status-cancelled{
+    background: #fee2e2;
+
+    color: #dc2626;
+}
+
+.status-failed{
+    background: #fee2e2;
+
+    color: #dc2626;
+}
+
+.status-delivered{
+    background: #dbeafe;
+
+    color: #2563eb;
+}
+
+
 .payment-paid{
     color: #15803d;
 

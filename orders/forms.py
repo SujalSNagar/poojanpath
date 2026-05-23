@@ -32,7 +32,12 @@ class CheckoutForm(forms.ModelForm):
 
             'full_name': forms.TextInput(
                 attrs={
-                    'placeholder': 'Enter full name'
+                    'placeholder': 'Enter full name',
+                    'required': True,
+
+                    'oninvalid': "this.setCustomValidity('Full name is required')",
+
+                    'oninput': "this.setCustomValidity('')"
                 }
             ),
 

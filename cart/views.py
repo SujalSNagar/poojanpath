@@ -4,10 +4,14 @@ from products.models import Product
 
 from .cart import Cart
 
+from django.contrib import messages
+
 
 def cart_detail(request):
 
     cart = Cart(request)
+
+    
 
     return render(request,'cart/detail.html',
         {
@@ -23,6 +27,22 @@ def cart_add(request, product_id):
         cart = Cart(request)
 
         product = get_object_or_404(Product, id=product_id)
+
+        if product.stock <= 0:
+
+            messages.error(
+
+                request,
+
+                'Product is out of stock.'
+            )
+
+            return redirect(
+
+                'products:detail',
+
+                slug=product.slug
+            )
 
         cart.add(product=product)
 

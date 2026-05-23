@@ -3,12 +3,11 @@ from django.http import HttpResponse
 from .models import Product,Category
 
 from django.db.models import Q
-# Create your views here.
 
-# def product_detail(request, slug):
-#         product = get_object_or_404(Product,slug=slug)
-        
-#         return render(request, 'products/product_detail.html' , {'product': product})
+from datetime import timedelta
+
+from django.utils import timezone
+
 
 def product_detail(request, slug):
 
@@ -17,11 +16,30 @@ def product_detail(request, slug):
         slug=slug
     )
 
+    related_products = Product.objects.filter(
+        Q(category = product.category)
+        |
+        Q(subcategory = product.subcategory)
+    ).exclude(
+        id = product.id
+    )
+
+    start_date = (timezone.now().date() + timedelta(days=7))
+
+    end_date = (timezone.now().date() + timedelta(days=10))
+
+
     context = {
 
         'product': product,
 
-        'quantity_range': range(1, min(product.stock, 10) + 1)
+        'related_products': related_products,
+
+        'quantity_range': range(1, min(product.stock, 10) + 1),
+
+        'start_date': start_date,
+
+        'end_date': end_date,
     }
 
     return render(request, 'products/product_detail.html',context)

@@ -19,7 +19,7 @@
 
     border-radius: 24px;
 
-    padding: 3rem 2rem;
+    padding: 1rem 2rem;
 
     text-align: center;
 
@@ -51,15 +51,20 @@
 .success-actions{
     display: flex;
 
+    flex-direction: column;
+
     justify-content: center;
+
+    align-items: center;
 
     gap: 1rem;
 
-    flex-wrap: wrap;
 }
 
 .success-actions .btn{
     min-width: 190px;
+
+    width: fit-content;
 
     padding: 0.9rem 1.2rem;
 }
@@ -68,6 +73,17 @@
     font-size: 1rem;
 
     margin-bottom: 2rem;
+}
+
+.track-order-btn{
+
+    color: var(--color-primary);
+    text-decoration: none;
+
+    font-weight: 600;
+
+    font-size: 0.95rem;
+
 }
 
 .delivery-info strong{

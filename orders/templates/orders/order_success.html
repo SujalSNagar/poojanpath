@@ -24,7 +24,9 @@
         <p>
             Thank you for shopping with us.
             Your order has been placed successfully
-            and will be processed soon.
+            and will be processed soon. <a href="{% url 'orders:track_order' %}" class="track-order-btn">
+            Track Order
+        </a>
         </p>
 
         <p class="delivery-info">
@@ -32,7 +34,7 @@
     Expected Delivery :
 
     <strong>
-        {{ estimated_delivery_date }}
+        {{ estimated_delivery_date|date:"l, d M Y" }}
     </strong>
 
 </p>
@@ -40,12 +42,13 @@
         <div class="success-actions">
 
             <a href="{% url 'core:home' %}"
-               class="btn btn-main">
-
-                Continue Shopping
-
-            </a>
-
+            class="btn btn-main">
+            
+            Continue Shopping
+            
+        </a>
+        
+        
         </div>
 
     </div>

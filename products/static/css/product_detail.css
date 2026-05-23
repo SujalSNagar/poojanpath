@@ -54,6 +54,16 @@
     font-size: 1rem;
 }
 
+.stock-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+.bi-box{
+    margin-right: 5px;
+    color: green;
+}
+
 .stock{
     width: fit-content;
     padding: 0.45rem 0.9rem;
@@ -72,16 +82,39 @@
     color: #991b1b;
 }
 
+
+.delivery-info{
+    margin-top: 5px;
+}
+.bi-truck{
+    color: #991b1b;
+    font-size: 1.2rem;
+    margin-right: 5px;
+}
 .product-actions{
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 0.2rem;
+
+}
+
+.product-actions p{
+    color: #991b1b;
 }
 
 .product-actions .btn{
-    padding: 0.85rem 1.4rem;
+    padding: 0.85rem 4rem;
     font-weight: 600;
 }
+
+
+.similar-product{
+    font-size: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
 
 @media(max-width:768px){
 

@@ -11,7 +11,7 @@
 
     <div class="detail-header">
 
-        <span class="status-badge">
+        <span class="status-badge status-{{ order.order_status|lower }}">
             {{ order.order_status }}
         </span>
 
@@ -27,16 +27,19 @@
 
             {% for item in order.items.all %}
 
-                <div class="detail-card">
-
-                    <img src="{{ item.product.image.url }}"
-                         alt="{{ item.product.name }}" loading="lazy" decoding="async">
-
+                <div class="detail-card">   
+                    <a href="{% url 'products:detail' item.product.slug %}">
+                        <img src="{{ item.product.image.url }}"
+                        alt="{{ item.product.name }}" loading="lazy" decoding="async">
+                    </a>
+                        
                     <div>
+                        <a href="{% url 'products:detail' item.product.slug %}">
 
                         <h4>
                             {{ item.product.name }}
                         </h4>
+                        </a>
 
                         <p>
                             Qty : {{ item.quantity }}
@@ -135,6 +138,12 @@
             <h3>
                 ₹ {{ order.total_price }}
             </h3>
+
+            {% if order.order_status == 'cancelled' %}
+            <h4 class="cancel-condition-h4">
+                Order Cancelled
+            </h4>
+            {% endif %}
 
         </div>
 
