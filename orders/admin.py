@@ -6,7 +6,6 @@ from .models import (
     Address
 )
 
-
 class OrderItemInline(admin.TabularInline):
 
     model = OrderItem
@@ -34,7 +33,7 @@ class OrderAdmin(admin.ModelAdmin):
 
         'order_status',
 
-        'created_at'
+        'created_at',
     )
 
     list_filter = (
@@ -43,8 +42,12 @@ class OrderAdmin(admin.ModelAdmin):
 
         'payment_status',
 
-        'payment_method'
+        'payment_method',
+
+        'created_at',
     )
+
+    date_hierarchy = 'created_at'
 
     search_fields = (
 
@@ -55,9 +58,13 @@ class OrderAdmin(admin.ModelAdmin):
         'email'
     )
 
+    
+
     inlines = [
         OrderItemInline
     ]
+
+
 
 
 @admin.register(Address)
@@ -89,3 +96,4 @@ class AddressAdmin(admin.ModelAdmin):
 
         'city'
     )
+

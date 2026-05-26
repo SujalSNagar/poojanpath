@@ -43,6 +43,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -162,3 +163,20 @@ RAZORPAY_KEY_ID = os.getenv(
 RAZORPAY_KEY_SECRET = os.getenv(
     'RAZORPAY_KEY_SECRET'
 )
+
+
+JAZZMIN_SETTINGS = {
+
+    "site_title": "Pooja Path",
+    
+    "navigation_expanded": True,
+
+    "site_header": "Pooja Path Admin",
+
+    "site_brand": "Pooja Path",
+
+    "welcome_sign": "Welcome to Pooja Path Admin",
+
+    "copyright": "Pooja Path",
+
+}
