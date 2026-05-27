@@ -49,7 +49,14 @@ class CheckoutForm(forms.ModelForm):
 
             'email': forms.EmailInput(
                 attrs={
-                    'placeholder': 'Enter email address'
+                
+                    'placeholder': 'Enter email address',
+
+                    'required': True,
+
+                    'oninvalid': "this.setCustomValidity('Email is required')",
+
+                    'oninput': "this.setCustomValidity('')"
                 }
             ),
 
@@ -101,16 +108,19 @@ class CheckoutForm(forms.ModelForm):
 
 
     def clean_email(self):
-
+    
         email = self.cleaned_data.get(
             'email'
         )
-
-        if email:
-
-            email = email.lower().strip()
-
-        return email
+    
+        if not email:
+        
+            raise forms.ValidationError(
+            
+                'Email is required.'
+            )
+    
+        return email.lower().strip()
 
 
     def clean_postal_code(self):

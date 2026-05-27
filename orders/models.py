@@ -4,6 +4,8 @@ from accounts.models import User
 
 from products.models import Product
 
+import uuid
+
 
 STATE_CHOICES = [
 
@@ -157,6 +159,15 @@ class Order(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True
+    )
+
+    public_order_id = models.UUIDField(
+
+        null=True,
+    
+        blank=True,
+    
+        editable=False
     )
 
     full_name = models.CharField(
