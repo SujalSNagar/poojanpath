@@ -269,7 +269,6 @@ a {
 
 
 
-
 .desktop-search{
     flex: 1;
 
@@ -757,6 +756,8 @@ a {
       background: var(--color-primary-dark);
       color: var(--color-white);
     }
+
+    
     .navbar-toggler{
         display: none;
     }
@@ -788,6 +789,18 @@ a {
     .custom-nav .container{
         gap: 0.75rem;
     }
+
+    .nav-link.nav-list{
+    display: flex !important;
+
+    align-items: center;
+
+    gap: 0.45rem;
+}
+
+.nav-link.nav-list i{
+    line-height: 1;
+}
 
     .mega-nav-wrapper{
         display: none;

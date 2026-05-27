@@ -2,9 +2,21 @@
     padding-block: 4rem;
 }
 
+
+
 .account-header{
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 1rem;
+
     margin-bottom: 2rem;
 }
+
+
 
 .account-header h1{
     margin-bottom: 0.5rem;
@@ -12,6 +24,44 @@
 
 .account-header p{
     color: #666;
+}
+
+.admin-panel-btn{
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.7rem;
+
+
+background: linear-gradient(
+    135deg,
+    #111827,
+    #374151
+);
+
+    color: gold;
+
+    text-decoration: none;
+
+    padding: 0.9rem 4rem;
+
+    border-radius: 14px;
+
+    font-weight: 600;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+
+    transition: 0.3s;
+}
+
+.admin-panel-btn i{
+    font-size: 1.1rem;
+}
+
+.admin-panel-btn:hover{
+    transform: translateY(-2px);
+
 }
 
 .account-card{
@@ -128,6 +178,18 @@
     .account-section{
         padding-block: 2rem;
     }
+
+    .account-header{
+    flex-direction: column;
+
+    align-items: flex-start;
+}
+
+.admin-panel-btn{
+    width: 100%;
+
+    justify-content: center;
+}
 
     .account-grid{
         grid-template-columns: 1fr;

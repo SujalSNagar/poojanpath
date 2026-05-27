@@ -112,6 +112,16 @@
 
                 </li>
 
+                {% if request.user.is_staff %}
+                <li class="nav-item">
+                    <a href="/admin/" class="admin-btn nav-link nav-list">
+                                
+                        Admin Panel
+                                
+                    </a>
+                </li>
+                {% endif %}
+
                 <li class="nav-item">
 
                     <a class="nav-link signup-btn"
@@ -251,10 +261,21 @@
                href="{% url 'accounts:account' %}">
 
                 <i class="bi bi-person-circle"></i>
+                Account
 
             </a>
 
         </li>
+
+         {% if request.user.is_staff %}
+                <li class="nav-item">
+                    <a href="/admin/" class="admin-btn nav-link nav-list">
+                                
+                        Admin Panel
+                                
+                    </a>
+                </li>
+                {% endif %}
 
         <li class="nav-item">
 

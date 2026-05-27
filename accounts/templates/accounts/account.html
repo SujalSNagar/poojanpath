@@ -9,7 +9,34 @@
 
 <section class="account-section container">
 
+    {% comment %} <div class="account-header">
+
+        <h1>
+            My Account
+        </h1>
+
+        <p>
+            Welcome back,
+            {{ request.user.mobile_number }}
+        </p>
+
+        {% if request.user.is_authenticated and request.user.is_staff %}
+
+            <a href="/admin"
+           class="account-link-card">
+            <span>
+                Go to Admin Panel
+            </span>
+
+        </a>
+
+        {% endif %}
+
+    </div> {% endcomment %}
+
     <div class="account-header">
+
+    <div>
 
         <h1>
             My Account
@@ -22,6 +49,22 @@
 
     </div>
 
+    {% if request.user.is_authenticated and request.user.is_staff %}
+
+        <a href="/admin/"
+           class="admin-panel-btn">
+
+            <i class="bi bi-shield-lock-fill"></i>
+
+            <span>
+                Admin Panel
+            </span>
+
+        </a>
+
+    {% endif %}
+
+</div>
 
 
         <div class="account-card">
