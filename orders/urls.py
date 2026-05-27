@@ -11,13 +11,13 @@ urlpatterns = [
     path('success/',views.order_success,name='success'),
 
     path('my-orders/',views.my_orders,name='my_orders'),
-    path('<int:order_id>/',views.order_detail,name='order_detail'),
+    path('<uuid:public_order_id>/',views.order_detail,name='order_detail'),
 
     path('track/',views.track_order,name='track_order'),
 
     path(
 
-    'cancel/<int:order_id>/',
+    'cancel/<uuid:public_order_id>/',
 
     views.cancel_order,
 

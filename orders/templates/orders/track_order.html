@@ -57,7 +57,7 @@
             <div class="tracked-order-card">
 
                 <h4>
-                    Order #{{ order.id }}
+                    Order id: {{ order.public_order_id|stringformat:"s"|slice:":8"|upper }}
                 </h4>
 
                 <p class="order-status status-badge status-{{ order.order_status|lower }}">

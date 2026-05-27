@@ -163,11 +163,11 @@ class Order(models.Model):
 
     public_order_id = models.UUIDField(
 
-        null=True,
-    
-        blank=True,
-    
-        editable=False
+        default=uuid.uuid4,
+
+        editable=False,
+
+        unique=True
     )
 
     full_name = models.CharField(
@@ -178,9 +178,7 @@ class Order(models.Model):
         max_length=10
     )
 
-    email = models.EmailField(
-        blank=True
-    )
+    email = models.EmailField()
 
     address = models.TextField()
 

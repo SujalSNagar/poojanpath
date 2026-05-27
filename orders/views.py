@@ -331,13 +331,13 @@ def verify_payment(request):
             'orders:checkout'
         )
 
-def payment_failed(request, order_id):
+def payment_failed(request, public_order_id):
 
     order = get_object_or_404(
 
         Order,
 
-        id=order_id
+        public_order_id=public_order_id
     )
 
     order.payment_status = 'failed'
@@ -413,13 +413,13 @@ def my_orders(request):
 
 
 
-def cancel_order(request, order_id):
+def cancel_order(request, public_order_id):
 
     order = get_object_or_404(
 
         Order,
 
-        id=order_id,
+        public_order_id=public_order_id,
 
         user=request.user
     )
@@ -458,7 +458,7 @@ def cancel_order(request, order_id):
 
 @login_required
 
-def order_detail(request, order_id):
+def order_detail(request, public_order_id):
 
     order = get_object_or_404(
 
@@ -469,7 +469,7 @@ def order_detail(request, order_id):
             'items__product'
         ),
 
-        id=order_id,
+        public_order_id=public_order_id,
 
         user=request.user
     )
