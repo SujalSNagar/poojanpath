@@ -22,6 +22,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {
             'fields': (
                 'mobile_number',
+                'email',
                 'password',
             )
         }),

@@ -6,16 +6,18 @@ from .cart import Cart
 
 from django.contrib import messages
 
+from django.http import JsonResponse
+from core.utils import get_delivery_dates
 
 def cart_detail(request):
 
     cart = Cart(request)
-
-    
-
+    start_date, end_date = get_delivery_dates()
     return render(request,'cart/detail.html',
         {
-            'cart': cart
+            'cart': cart,
+            'start_date': start_date,
+            'end_date': end_date
         }
     )
 
@@ -30,23 +32,19 @@ def cart_add(request, product_id):
 
         if product.stock <= 0:
 
-            messages.error(
-
-                request,
-
-                'Product is out of stock.'
-            )
-
-            return redirect(
-
-                'products:detail',
-
-                slug=product.slug
-            )
+            return JsonResponse({
+                'success': False,
+                'message': 'Product is out of stock.'
+            })
 
         cart.add(product=product)
 
-    return redirect('cart:detail')
+    return JsonResponse({
+        'success': True,
+        'message': 'Added to cart',
+        'cart_count': len(cart)
+    })
+
 
 
 def cart_increase(request, product_id):
@@ -85,5 +83,14 @@ def cart_remove(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
     cart.remove(product)
+
+    return redirect('cart:detail')
+
+
+def cart_clear(request):
+
+    cart = Cart(request)
+
+    cart.clear()
 
     return redirect('cart:detail')

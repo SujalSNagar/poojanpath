@@ -68,7 +68,7 @@
         Expected Delivery: <b>{{ start_date|date:"d M" }} - {{ end_date|date:"d M"}}</b>
         </p>
 
-    <form action="{% url 'cart:add' product.id %}" method="post">
+    <form action="{% url 'cart:add' product.id %}" method="post" class="add-to-cart-form">
 
         {% csrf_token %}
 
@@ -158,10 +158,9 @@
                 <div class="px-3 pb-3">
 
                     <form action="{% url 'cart:add' product.id %}"
-                          method="post">
+                          method="post" class="add-to-cart-form">
 
                         {% csrf_token %}
-
                         <button type="submit"
                                 class="btn btn-main w-100 py-2">
 

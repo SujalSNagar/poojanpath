@@ -42,7 +42,7 @@
                 <div class="px-2 pb-2">
 
                     <form action="{% url 'cart:add' product.id %}"
-                          method="post">
+                          method="post" class="add-to-cart-form">
 
                         {% csrf_token %}
 

@@ -14,11 +14,23 @@ def signup_page(request):
 
         mobile = request.POST.get("mobile_number")
         email = request.POST.get("email")
-        if email:
-            email = email.strip().lower()
+        if not email:
 
-        else:
-            email = None
+            messages.error(
+            
+                request,
+
+                "Email is required"
+            )
+
+            return render(
+
+                request,
+
+                "accounts/signup.html"
+            )
+        
+        email = email.strip().lower()
 
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")

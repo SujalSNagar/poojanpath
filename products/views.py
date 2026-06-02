@@ -1,12 +1,9 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
 from .models import Product,Category
 
 from django.db.models import Q
 
-from datetime import timedelta
-
-from django.utils import timezone
+from core.utils import get_delivery_dates
 
 
 def product_detail(request, slug):
@@ -24,10 +21,7 @@ def product_detail(request, slug):
         id = product.id
     )
 
-    start_date = (timezone.now().date() + timedelta(days=7))
-
-    end_date = (timezone.now().date() + timedelta(days=10))
-
+    start_date, end_date = get_delivery_dates()
 
     context = {
 

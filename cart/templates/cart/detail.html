@@ -20,7 +20,19 @@
         <h1>Your Cart</h1>
 
     </div>
+    
     {% if cart_item_count > 0 %}
+        <button
+            type="button"
+            class="btn clear-cart-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#clearCartModal">
+
+            <i class="bi bi-trash3"></i>
+
+            Remove All Items
+
+        </button>
 
         <div class="cart-wrapper">
 
@@ -79,7 +91,7 @@
                             <a href="{% url 'cart:remove' item.product.id %}"
                                class="remove-btn">
                                 <i class="bi bi-trash"></i>
-                                Remove 
+                                Remove Item
 
                             </a>
 
@@ -113,7 +125,7 @@
                 </div>
 
                 <div class="delivery_date">
-                    <p>Expected Delivery : <b></b></p>
+                    <p>Expected Delivery : <b>{{ start_date|date:"d M" }} - {{ end_date|date:"d M"}}</b></p>
                 </div>
 
                 <a href="{% url 'orders:checkout' %}"
@@ -148,5 +160,60 @@
     {% endif %}
 
 </section>
+
+
+<div class="modal fade"
+     id="clearCartModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Clear Cart
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                Are you sure you want to remove all items from your cart?
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <a href="{% url 'cart:clear' %}"
+                   class="btn btn-danger">
+
+                    Remove All
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock body %}

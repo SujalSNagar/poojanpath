@@ -523,6 +523,24 @@
 
 </div>
 
+<div class="toast-container cart-toast-container">
+
+    <div id="cartToast"
+         class="toast cart-toast"
+         role="alert">
+
+        <div class="toast-body">
+
+            <i class="bi bi-check-circle-fill me-2"></i>
+
+            Product added to cart successfully.
+
+        </div>
+
+    </div>
+
+</div>
+
 {% block body %}
 
 {% endblock body %}
@@ -667,6 +685,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/cart.js' %}"></script>
 {% block extra_js %}
 
 {% endblock extra_js %}

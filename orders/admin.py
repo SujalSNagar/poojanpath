@@ -25,6 +25,8 @@ class OrderAdmin(admin.ModelAdmin):
 
         'mobile_number',
 
+        'customer_orders_count',
+
         'total_price',
 
         'payment_method',
@@ -63,6 +65,15 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [
         OrderItemInline
     ]
+
+
+    def customer_orders_count(self, obj):
+
+        return Order.objects.filter(
+            mobile_number=obj.mobile_number
+        ).count()
+
+    customer_orders_count.short_description = 'Total Orders'
 
 
 
