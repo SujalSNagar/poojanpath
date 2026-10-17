@@ -64,7 +64,7 @@ modal: {
 
         window.location.href =
 
-        "{% url 'orders:payment_failed' order.id %}"
+        "{% url 'orders:payment_failed' public_order_id=order.public_order_id %}"
     }
 }
     }
