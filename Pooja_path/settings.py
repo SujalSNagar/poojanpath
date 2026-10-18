@@ -21,6 +21,7 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
     for origin in os.environ.get(
@@ -149,16 +150,16 @@ RAZORPAY_KEY_SECRET = os.environ["RAZORPAY_KEY_SECRET"]
 
 JAZZMIN_SETTINGS = {
 
-    "site_title": "Pooja Path",
+    "site_title": "Poojanpaath.com",
     
     "navigation_expanded": True,
 
-    "site_header": "Pooja Path Admin",
+    "site_header": "Poojanpaath.com Admin",
 
-    "site_brand": "Pooja Path",
+    "site_brand": "Poojanpaath.com",
 
-    "welcome_sign": "Welcome to Pooja Path Admin",
+    "welcome_sign": "Welcome to PoojanPaath.com Admin",
 
-    "copyright": "Pooja Path",
+    "copyright": "PoojanPaath.com",
 
 }
